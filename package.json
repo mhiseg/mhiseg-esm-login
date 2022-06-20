@@ -1,6 +1,6 @@
 {
   "name": "@openmrs/esm-login-app",
-  "version": "3.1.0",
+  "version": "0.0.1",
   "description": "The login microfrontend for the OpenMRS SPA",
   "main": "dist/mhiseg-esm-login-app.js",
   "types": "src/index.ts",
