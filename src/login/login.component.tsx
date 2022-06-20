@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../styles.scss';
 import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useConfig } from '@openmrs/esm-framework';
+import { navigate, NavigateOptions, useConfig } from '@openmrs/esm-framework';
 import { performLogin } from './login.resource';
 import { useCurrentUser } from '../CurrentUserContext';
 import type { StaticContext } from 'react-router';
@@ -26,14 +26,16 @@ const Login: React.FC<LoginProps> = ({ history, location, isLoginEnabled }) => {
   const [errorMessage, setErrorMessage] = React.useState('');
   const passwordInputRef = React.useRef<HTMLInputElement>(null);
   const usernameInputRef = React.useRef<HTMLInputElement>(null);
-  const formRef = React.useRef<HTMLFormElement>(null);
   const [t] = useTranslation();
+  const to: NavigateOptions = { to: window.spaBase + '/home' };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
-      history.push('/home', location ? location.state : undefined);
+      history.push('home');
+    } else if (!username) {
+      history.replace('/login');
     }
-  }, [user, history, location]);
+  }, [user, username, history]);
 
   const changeUsername = React.useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => setUsername(evt.target.value),
@@ -51,25 +53,13 @@ const Login: React.FC<LoginProps> = ({ history, location, isLoginEnabled }) => {
         const loginRes = await performLogin(username, password);
         const authData = loginRes.data;
         const valid = authData && authData.authenticated;
-        if (!valid) {
-          throw new Error('Incorrect username or password');
-        } else {
-          console.log('test', authData);
-        }
+        if (!valid) throw new Error('Incorrect username or password');
       } catch (error) {
         setErrorMessage(error.message);
       }
       return false;
     },
     [username, password],
-  );
-
-  const logo = config.logo.src ? (
-    <img src={config.logo.src} alt={config.logo.alt} className={styles['logo-img']} />
-  ) : (
-    <svg role="img" className={styles['logo']}>
-      <use xlinkHref="#omrs-logo-full-color"></use>
-    </svg>
   );
 
   return (
@@ -79,7 +69,7 @@ const Login: React.FC<LoginProps> = ({ history, location, isLoginEnabled }) => {
           <h1> MHISEG</h1>
           <h3> Modern Health Information System Expert Group</h3>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form className={`${styles.form}`} onSubmit={handleSubmit}>
           <div className={styles.blockInput}>
             <label>{t('username')}</label>
             <TextInput
