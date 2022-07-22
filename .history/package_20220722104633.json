@@ -36,6 +36,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "bugs": {
+    "url": "https://github.com/openmrs/openmrs-esm-template-app/issues"
+  },
   "dependencies": {
     "@carbon/icons-react": "^10.18.0",
     "carbon-components-react": "^7.25.0",

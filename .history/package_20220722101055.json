@@ -32,9 +32,12 @@
     "type": "git",
     "url": "git+https://github.com/mhiseg/mhiseg-esm-login.git"
   },
-  "homepage": "https://github.com/mhiseg/mhiseg-esm-login/blob/main/README.md",
+  "homepage": "https://github.com/openmrs/openmrs-esm-template-app#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/openmrs/openmrs-esm-template-app/issues"
   },
   "dependencies": {
     "@carbon/icons-react": "^10.18.0",

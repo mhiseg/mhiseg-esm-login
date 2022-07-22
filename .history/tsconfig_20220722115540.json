@@ -4,8 +4,13 @@
     "module": "esnext",
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
+<<<<<<< HEAD
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+=======
     "skipLibCheck": true,
     "moduleResolution": "node",
+>>>>>>> fix the module to watch it
     "lib": [
       "dom",
       "es5",
@@ -16,8 +21,14 @@
       "es2018",
       "es2020"
     ],
+<<<<<<< HEAD
+    "noEmit": true
+  },
+  "include": ["src/**/*"]
+=======
     "resolveJsonModule": true,
     "noEmit": true,
     "target": "esnext"
   }
+>>>>>>> fix the module to watch it
 }

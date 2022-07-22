@@ -10,8 +10,13 @@ on:
       - created
 
 env:
+<<<<<<< HEAD
   ESM_NAME: "@openmrs/esm-login-app"
   JS_NAME: "openmrs-esm-login-app.js"
+=======
+  ESM_NAME: "@openmrs/esm-template-app"
+  JS_NAME: "openmrs-esm-template-app.js"
+>>>>>>> fix the module to watch it
 
 jobs:
   build:
@@ -22,12 +27,21 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
+<<<<<<< HEAD
           node-version: "14.x"
       - run: npm install
       - run: npm run lint
       - run: npm run coverage
       - run: npm run typescript
       - run: npm run build --if-present
+=======
+          node-version: "16.x"
+      - run: yarn
+      - run: yarn lint
+      - run: yarn coverage
+      - run: yarn typescript
+      - run: yarn build
+>>>>>>> fix the module to watch it
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -35,6 +49,7 @@ jobs:
           path: |
             dist
 
+<<<<<<< HEAD
   deploy:
     runs-on: ubuntu-latest
 
@@ -72,6 +87,8 @@ jobs:
           data: '{ "service":"${{ env.ESM_NAME }}","url":"https://spa-modules.nyc3.digitaloceanspaces.com/${{ env.ESM_NAME }}/${{ env.TIMESTAMP }}_${{ github.sha }}/${{ env.JS_NAME }}" }'
           customHeaders: '{ "Accept": "application/json", "Content-Type": "application/json" }'
 
+=======
+>>>>>>> fix the module to watch it
   pre_release:
     runs-on: ubuntu-latest
 
@@ -80,6 +97,7 @@ jobs:
     if: ${{ github.event_name == 'push' }}
 
     steps:
+<<<<<<< HEAD
       - uses: actions/checkout@v2
       - name: Download Artifacts
         uses: actions/download-artifact@v2
@@ -93,6 +111,22 @@ jobs:
       - run: npm publish --access public --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+=======
+      - run: echo "Uncomment the lines below and delete this one."
+      # - uses: actions/checkout@v2
+      # - name: Download Artifacts
+      #   uses: actions/download-artifact@v2
+      # - name: Use Node.js
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: "16.x"
+      #     registry-url: "https://registry.npmjs.org"
+      # - run: npm install
+      # - run: sed -i -e "s/\(\"version\":\\s\+\"\([0-9]\+\.\?\)\+\)/\1-pre.${{ github.run_number }}/" 'package.json'
+      # - run: npm publish --access public --tag next
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+>>>>>>> fix the module to watch it
 
   release:
     runs-on: ubuntu-latest
@@ -108,9 +142,16 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
+<<<<<<< HEAD
           node-version: "14.x"
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
       - run: npm publish --access public
+=======
+          node-version: "16.x"
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn
+      - run: yarn publish --access public
+>>>>>>> fix the module to watch it
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
