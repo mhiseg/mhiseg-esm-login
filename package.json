@@ -1,12 +1,9 @@
 {
-  "name": "@openmrs/esm-login-app",
-  "version": "3.0.0",
-  "license": "MPL-2.0",
+  "name": "@mhiseg/esm-login-app",
+  "version": "0.0.1",
   "description": "The login microfrontend for the OpenMRS SPA",
   "browser": "dist/mhiseg-esm-login-app.js",
   "main": "src/index.ts",
-  "license": "MPL-2.0",
-  "homepage": "https://github.com/openmrs/openmrs-esm-login#readme",
   "source": true,
   "scripts": {
     "start": "openmrs develop",

@@ -14,7 +14,7 @@ const sharedOnlineOfflineProps = {
 };
 
 function setupOpenMRS() {
-  const moduleName = '@openmrs/esm-login-app';
+  const moduleName = '@mhiseg/esm-login-app';
 
   const options = {
     featureName: 'login',
