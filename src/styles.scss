@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@1,300&family=Roboto:ital,wght@1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&family=Roboto+Condensed:ital,wght@0,300;1,300&family=Roboto:ital,wght@1,500&display=swap');
+@import "./root.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: var(--color-white);  
+}
+
+.inputSearch{
+  border: 5px solid rgb(251, 255, 0);
+
+  border-radius:10px ;
+  background-color: black;
+}
+.blockInput{
+  margin-bottom: 10%;
+}
+
+.blockInput label{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.login-card{
+  background: linear-gradient(105.79deg, rgba(0, 93, 112, 0.95) 34.06%, rgba(1, 103, 123, 0.9) 55.26%, rgba(0, 120, 145, 0.61) 74.79%, rgba(0, 137, 165, 0.518704) 81.77%, rgba(0, 164, 197, 0.38) 92.37%);
+  border-radius: 5px;
+  display: flex;
+}
+
+.form {
+  border: 1px solid #034E5E;
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 1em;
+  padding-top: 20%;
+  bottom: 0;
+  width: 30em;
+}
+
+.titleMhiseg{
+  margin: 5px;
+  height: 27.5rem;
+  padding-top: 20%;
+}
+
+.titleMhiseg h1, h3{
+  justify-content: center;
+}
+
+.titleMhiseg h1{
+  // font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 75px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.inputStyle{
+  
+  height: 2.8rem;
+  border-radius: 5px;
+  background: #F8F7FB;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginButton{
+  background: #034E5E;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 12%;
+  padding: 0;
+  justify-content: center;
+}
+
+.titleMhiseg h3{
+  // font-family: 'Roboto condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  text-align: center;  
+  color: #FFFFFF;
+}
+
+.footer{
+  // font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 15px;
+  margin-left: -370px;
+  text-transform: capitalize;
+  color: #FFFFFF;
+  margin-top: -5em;
+}
+
+.need-help {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5em;
+}
+.center{
+  text-align: center;
+  margin-top: 1em;
+}
+.error-msg{
+  color:red;
+}
+.need-help-txt {
+  @extend .bodyShort01;
+  color: $text-02;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.contact-administrator-need-help {
+  @extend .bodyShort01;
+  padding-left: 0.5rem;
+}
+
+@media only screen and (min-width: 481px) {
+  .login-card {
+    padding: 2.5rem;
+    width: 50rem;
+  }
+ 
+  .container {
+    height: 100vh;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .login-card {
+    padding: 2.5rem;
+    width: 100%;
+    display: block;
+  }
+  .titleMhiseg{
+    margin: 5px;
+    height: 10.5rem;
+    padding-top: 0%;
+  }
+
+  form {
+    width: 100%;
+  }
+  .titleMhiseg h1{
+    font-size: 4em;
+  }
+  .titleMhiseg h3{
+    font-size: 1.5em;
+  }
+  .container {
+    margin-top: 10%;
+    padding: 5%;
+    height: 100%;
+  }
+  .footer{
+    margin-left: 0;
+  }
+}
