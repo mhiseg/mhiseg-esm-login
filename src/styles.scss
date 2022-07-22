@@ -35,8 +35,7 @@
 }
 
 .login-card {
-  background: linear-gradient(105.79deg, rgba(0, 93, 112, 0.95) 34.06%, rgba(1, 103, 123, 0.9) 55.26%, rgba(0, 120, 145, 0.61) 74.79%, rgba(0, 137, 165, 0.518704) 81.77%, rgba(0, 164, 197, 0.38) 92.37%)
-  ,url('./assets/stethoscope.jpg');
+  background: linear-gradient(105.79deg, rgba(0, 93, 112, 0.95) 34.06%, rgba(1, 103, 123, 0.9) 55.26%, rgba(0, 120, 145, 0.61) 74.79%, rgba(0, 137, 165, 0.518704) 81.77%, rgba(0, 164, 197, 0.38) 92.37%), url('./assets/stethoscope.jpg');
   border-radius: 5px;
   display: flex;
 }
@@ -86,12 +85,16 @@ h3 {
 }
 
 .loginButton {
-  background: #034E5E;
+  background: $brand-01;
   border-radius: 5px;
   width: 100%;
   margin-top: 12%;
   padding: 0;
   justify-content: center;
+}
+
+.loginButton:hover {
+  background: $brand-02;
 }
 
 .titleMhiseg h3 {
@@ -142,6 +145,12 @@ h3 {
 
   Button {
     color: $ui-01;
+    margin-left: 5px;
+  }
+
+  Button:hover {
+    color: $ui-01;
+    background-color: $brand-01;
   }
 }
 
