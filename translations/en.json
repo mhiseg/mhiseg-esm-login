@@ -8,5 +8,6 @@
   "welcome": "Welcome",
   "poweredBy": "Powered by",
   "contactAdmin":"Contact the site administrator",
-  "needHelp":"needHelp"
+  "needAccount":"You don't have an account ?",
+  "signUp": "Sign up"
 }

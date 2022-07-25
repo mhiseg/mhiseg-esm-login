@@ -8,6 +8,7 @@
   "welcome": "Bienvenu",
   "poweredBy": "Propulsé par",
   "contactAdmin":"Contacter votre administrateur",
-  "needHelp":"aide"
+  "needAccount":"Vous n'avez pas de compte ?",
+  "signUp":"Créer un nouveau compte"
 
 }

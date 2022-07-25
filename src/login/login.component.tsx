@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styles from '../styles.scss';
 import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { navigate, NavigateOptions, useConfig } from '@openmrs/esm-framework';
+import { navigate, NavigateOptions, useConfig, ConfigurableLink } from '@openmrs/esm-framework';
 import { performLogin } from './login.resource';
 import { useCurrentUser } from '../CurrentUserContext';
 import type { StaticContext } from 'react-router';
@@ -102,8 +102,10 @@ const Login: React.FC<LoginProps> = ({ history, location, isLoginEnabled }) => {
           </Button>
           <div className={styles['need-help']}>
             <p className={styles['need-help-txt']}>
-              {t('needHelp', 'Need help?')}
-              <Button kind="ghost">{t('contactAdmin', 'Contact the site administrator')}</Button>
+              {t('needAccount', 'Need account?')}
+              <ConfigurableLink to="${openmrsBase}/spa/login/signup" className={styles['need-account']}>
+                &nbsp;{t('signUp')}
+              </ConfigurableLink>
             </p>
           </div>
         </form>
