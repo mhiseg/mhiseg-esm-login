@@ -100,14 +100,14 @@ const Login: React.FC<LoginProps> = ({ history, location, isLoginEnabled }) => {
           <Button className={styles.loginButton} type="submit">
             {t('login', 'Log in')}
           </Button>
-          <div className={styles['need-help']}>
+          {/* <div className={styles['need-help']}>
             <p className={styles['need-help-txt']}>
               {t('needAccount', 'Need account?')}
               <ConfigurableLink to="${openmrsBase}/spa/login/signup" className={styles['need-account']}>
                 &nbsp;{t('signUp')}
               </ConfigurableLink>
             </p>
-          </div>
+          </div> */}
         </form>
       </div>
       <span className={styles.footer}>in collaboration with OpenMRS community</span>

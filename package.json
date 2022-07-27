@@ -36,7 +36,9 @@
   "dependencies": {
     "@carbon/icons-react": "^10.18.0",
     "carbon-components-react": "^7.25.0",
-    "lodash-es": "^4.17.15"
+    "lodash-es": "^4.17.15",
+    "formik": "^2.2.9",
+    "yup": "^0.32.11"
   },
   "peerDependencies": {
     "@openmrs/esm-framework": "^3.14.0-pre",
