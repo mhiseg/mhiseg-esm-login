@@ -8,7 +8,7 @@
   "welcome": "Bienvenu",
   "poweredBy": "Propulsé par",
   "contactAdmin":"Contacter votre administrateur",
-  "needAccount":"Vous n'avez pas de compte ?",
+  "needAccount":"Vous ne voulez pas changer votre mot de passe ?",
   "signUp":"Créer un nouveau compte",
   "needSignin":"Vous avez un compte",
   "signIn": "Connecter",
@@ -20,12 +20,16 @@
   "messageErrorEmail":"Saisir un email adresse",
   "messageErrorGivenName":"Saisir un prénom",
   "messageErrorFamilyName":"Saisir un nom",
-  "messageErrorPassword":"Saisir un mot de passe de confirmation de Mot de passe",
+  "messageErrorPassword":"Saisir un mot de passe ",
   "messageErrorPasswordConfirm": "Veuillez confirmer le mot de passe",
   "messageErrorEmailInvalid":"Saisir un email adresse valide",
   "messageErrorPasswordFormat": "Doit contenir 8 caractères, une majuscule, une minuscule, un chiffre",
   "messageErrorPasswordMin": "Doit contenir 8 caractères au moins",
   "messageErrorPasswordMax": "Doit contenir 50 caractères au plus",
   "messageErrorIdentiticPassword": "Les mots de passes ne sont pas identiques",
-  "messageErrorUsernameExists": "Ce pseudo exist déjà pour un autre utilisateur" 
+  "messageErrorUsernameExists": "Ce pseudo exist déjà pour un autre utilisateur",
+  "changePasswordLabel":"Changer le mot de passe",
+  "oldPassword": "Ancien mot de passe",
+  "newPassword": "Nouveau mot de passe",
+  "changePassword":"Changer"
 }

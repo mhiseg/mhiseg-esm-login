@@ -12,6 +12,7 @@ const Root: React.FC<RootProps> = ({ isLoginEnabled }) => {
     <CurrentUserContext>
       <BrowserRouter basename={window.spaBase}>
         <Route exact path="/login" render={(props) => <Login {...props} isLoginEnabled={isLoginEnabled} />} />
+        <Route exact path="/changePassword" render={(props) => <Login {...props} isLoginEnabled={isLoginEnabled} />} />
       </BrowserRouter>
     </CurrentUserContext>
   );
