@@ -26,10 +26,12 @@
   "messageErrorPasswordFormat": "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number",
   "messageErrorPasswordMin": "Please enter a minimum 8 characters",
   "messageErrorPasswordMax": "Please enter a maximum 50 characters",
-  "messageErrorIdentiticPassword": "Please enter a identic password ",
-  "messageErrorUsernameExists": "this username already exists",
+  "messageErrorIdenticPassword": "Please enter a identic password ",
+  "messageErrorIdentic":  "old password can not identic with new password",
+  "messageErrorUsernameOrPassword": "Incorrect username or password",
   "changePasswordLabel":"Change your password",
   "oldPassword": "Old password",
   "newPassword": "New password",
-  "changePassword":"Chanje" 
+  "changePassword":"Chanje"
+
 }

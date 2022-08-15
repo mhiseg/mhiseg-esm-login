@@ -47,8 +47,6 @@ export async function updatePasswordUser(
 }
 
 export function saveUser(abortController: AbortController, user, uuid?: string) {
-  console.log(user, '++++++++++++++++++++++++', uuid);
-
   return openmrsFetch(`${BASE_WS_API_URL}user/${uuid}`, {
     method: 'POST',
     body: user,

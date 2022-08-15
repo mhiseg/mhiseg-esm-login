@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
-import styles from '../styles.scss';
-import { RouteComponentProps } from 'react-router-dom';
+import { ConfigurableLink, refetchCurrentUser } from '@openmrs/esm-framework';
+import { Form, TextInput, Button, PasswordInput } from 'carbon-components-react';
+import { Formik } from 'formik';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useConfig, ConfigurableLink, refetchCurrentUser } from '@openmrs/esm-framework';
-import { login, performLogin, saveUser, Status, updatePasswordUser } from './login.resource';
+import { RouteComponentProps, StaticContext } from 'react-router';
+import * as Yup from 'yup';
 import { useCurrentUser } from '../CurrentUserContext';
-import type { StaticContext } from 'react-router';
-import { Button, TextInput } from 'carbon-components-react';
-
-const hidden: React.CSSProperties = { height: 0, width: 0, border: 0, padding: 0 };
+import styles from '../styles.scss';
+import { updatePasswordUser, login, Status, saveUser, performLogin } from './login.resource';
 
 export interface LoginReferrer {
   referrer?: string;
@@ -18,65 +17,45 @@ export interface LoginProps extends RouteComponentProps<{}, StaticContext, Login
   isLoginEnabled: boolean;
 }
 
-const Login: React.FC<LoginProps> = ({ history, location, isLoginEnabled }) => {
-  const config = useConfig();
-  const user = useCurrentUser();
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [oldPassword, setOldPassword] = React.useState('');
-  const [newPassword, setNewPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const passwordInputRef = React.useRef<HTMLInputElement>(null);
-  const usernameInputRef = React.useRef<HTMLInputElement>(null);
-  const oldPasswordInputRef = React.useRef<HTMLInputElement>(null);
-  const newPasswordInputRef = React.useRef<HTMLInputElement>(null);
-  const confirmPasswordInputRef = React.useRef<HTMLInputElement>(null);
-  const [t] = useTranslation();
+const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
+  const { t } = useTranslation();
+  const abortController = new AbortController();
+  const [user, setUser] = useState(useCurrentUser());
   const [updatePassword, setUpdatePassword] = React.useState(localStorage.getItem('token'));
+  const [errorMessage, setErrorMessage] = React.useState('');
 
-  // alert(updatePassword);
+  const [initialV, setInitialValue] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+    username: '',
+    password: '',
+  });
+
+  const authSchema = Yup.object().shape({
+    oldPassword: Yup.string(),
+    newPassword: Yup.string()
+      .min(8, t('messageErrorPasswordMin'))
+      .max(50, 'messageErrorPasswordMax')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/, t('messageErrorPasswordFormat')),
+    confirmPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], t('messageErrorIdenticPassword')),
+  });
 
   useEffect(() => {
     if (user) {
-      history.push('home');
-    } else if (!username) {
+      history.push(user?.userProperties?.defaultPage || '/home');
+    } else {
       history.replace('/login');
     }
   }, []);
 
-  const changeUsername = React.useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement>) => setUsername(evt.target.value),
-    [],
-  );
-  const changePassword = React.useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement>) => setPassword(evt.target.value),
-    [],
-  );
-
-  const changeOldPassword = React.useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement>) => setOldPassword(evt.target.value),
-    [],
-  );
-  const changeNewPassword = React.useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement>) => setNewPassword(evt.target.value),
-    [],
-  );
-  const changeConfirmPassword = React.useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(evt.target.value),
-    [],
-  );
-
-  const handleSubmit = React.useCallback(
-    async (evt: React.FormEvent<HTMLFormElement>) => {
-      evt.preventDefault();
-      evt.stopPropagation();
-      try {
-        if (updatePassword) {
-          if (oldPassword === newPassword) throw new Error('your new password may be different from the old password');
-          if (newPassword !== confirmPassword) throw new Error('your new password is not confirm');
-          updatePasswordUser(new AbortController(), oldPassword, newPassword, updatePassword).then(async (res) => {
-            const userLogin = await login(username, newPassword);
+  const handleSubmit = async (values) => {
+    try {
+      if (updatePassword) {
+        if (values.oldPassword === values.newPassword) throw new Error('messageErrorIdentic');
+        updatePasswordUser(new AbortController(), values.oldPassword, values.newPassword, updatePassword).then(
+          async (res) => {
+            const userLogin = await login(values.username, values.newPassword);
             let user = {
               userProperties: {
                 ...userLogin.data.user.userProperties,
@@ -87,129 +66,158 @@ const Login: React.FC<LoginProps> = ({ history, location, isLoginEnabled }) => {
             localStorage.removeItem('token');
             setUpdatePassword(undefined);
             refetchCurrentUser();
-            history.push('home');
-          });
-        } else {
-          const loginRes = await performLogin(username, password);
-          const authData = loginRes.data;
-          const valid = authData && authData.authenticated;
-          if (valid == null) {
-            localStorage.setItem('token', window.btoa(`${username}:${password}`));
-            setUpdatePassword(localStorage.getItem('token'));
-          } else if (!valid) throw new Error('Incorrect username or password');
+            history.push(user?.userProperties?.defaultPage || 'home');
+          },
+        );
+      } else {
+        const loginRes = await performLogin(values.username, values.password);
+        const authData = loginRes.data;
+        const valid = authData && authData.authenticated;
+        if (valid == null) {
+          localStorage.setItem('token', window.btoa(`${values.username}:${values.password}`));
+          setUpdatePassword(localStorage.getItem('token'));
+        } else if (!valid) {
+          throw new Error(t('messageErrorUsernameOrPassword'));
         }
-        history.push('home');
-      } catch (error) {
-        setErrorMessage(error.message);
+        history.push(authData?.user?.userProperties?.defaultPage || '/home');
       }
-      return false;
-    },
-    [username, password, newPassword, oldPassword, confirmPassword, updatePassword],
-  );
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+  };
 
   return (
-    <div className={styles.container}>
-      <div className={`${styles['login-card']}`}>
-        <div className={styles.titleMhiseg}>
-          <h1> MHISEG</h1>
-          <h3> Modern Health Information System Expert Group</h3>
-        </div>
-        <form className={`${styles.form}`} onSubmit={handleSubmit}>
-          {updatePassword ? (
-            <>
-              <h3 className={`${styles.title}`}>{t('changePasswordLabel')}</h3>
-              <br />
-
-              <div className={styles.blockInput}>
-                <label>{t('oldPassword')}</label>
-                <TextInput.PasswordInput
-                  className={styles.inputStyle}
-                  id={'oldPassword]'}
-                  labelText={''}
-                  ref={oldPasswordInputRef}
-                  required
-                  invalidText={t('messageErrorPassword')}
-                  onChange={changeOldPassword}
-                />
-              </div>
-              <div className={styles.blockInput}>
-                <label>{t('newPassword')}</label>
-                <TextInput.PasswordInput
-                  className={styles.inputStyle}
-                  id={'newPassword]'}
-                  labelText={''}
-                  ref={newPasswordInputRef}
-                  required
-                  invalidText={t('messageErrorPassword')}
-                  onChange={changeNewPassword}
-                />
-              </div>
-              <div className={styles.blockInput}>
-                <label>{t('messageErrorPasswordConfirm')}</label>
-                <TextInput.PasswordInput
-                  className={styles.inputStyle}
-                  id={'confirmPassword]'}
-                  labelText={''}
-                  ref={confirmPasswordInputRef}
-                  required
-                  invalidText={t('messageErrorPassword')}
-                  onChange={changeConfirmPassword}
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className={styles.blockInput}>
-                <label>{t('username')}</label>
-                <TextInput
-                  className={styles.inputStyle}
-                  id={'username'}
-                  labelText={''}
-                  ref={usernameInputRef}
-                  required
-                  invalidText={t('A valid value is required')}
-                  onChange={changeUsername}
-                />
-              </div>
-              <div className={styles.blockInput}>
-                <label>{t('password')}</label>
-                <TextInput.PasswordInput
-                  className={styles.inputStyle}
-                  id={'password]'}
-                  labelText={''}
-                  ref={passwordInputRef}
-                  required
-                  invalidText={t('A valid value is required')}
-                  onChange={changePassword}
-                />
-              </div>
-            </>
-          )}
-          <div className={styles['center']}>
-            <p className={styles['error-msg']}>{t(errorMessage)}</p>
+    <>
+      <div className={styles.container}>
+        <div className={`${styles['login-card']}`}>
+          <div className={styles.titleMhiseg}>
+            <h1> MHISEG</h1>
+            <h3> Modern Health Information System Expert Group</h3>
           </div>
-          <Button className={styles.loginButton} type="submit">
-            {t(updatePassword ? 'changePassword' : 'login')}
-          </Button>
-          {updatePassword && (
-            <div className={styles['need-help']}>
-              <p className={styles['need-help-txt']}>
-                {t('needAccount', 'Need account?')}
-                <ConfigurableLink
-                  to="${openmrsBase}/spa/login"
-                  className={styles['need-account']}
-                  onClick={(e) => {
-                    localStorage.removeItem('token');
-                  }}>
-                  &nbsp;{t('signIn')}
-                </ConfigurableLink>
-              </p>
-            </div>
-          )}
-        </form>
+          <Formik
+            enableReinitialize
+            initialValues={initialV}
+            validationSchema={authSchema}
+            onSubmit={(values) => {
+              handleSubmit(values);
+            }}>
+            {(formik) => {
+              const { values, handleSubmit, isValid, dirty, errors, touched, handleChange } = formik;
+              return (
+                <Form name="form" className={`${styles.form}`} onSubmit={handleSubmit}>
+                  {updatePassword ? (
+                    <>
+                      <h3 className={`${styles.title}`}>{t('changePasswordLabel')}</h3>
+                      <br />
+
+                      <div className={styles.blockInput}>
+                        <label>{t('oldPassword')}</label>
+                        <PasswordInput
+                          className={styles.inputStyle}
+                          id={'oldPassword]'}
+                          name="oldPassword"
+                          required={true}
+                          labelText={''}
+                          invalid={errors.oldPassword && touched.oldPassword}
+                          invalidText={errors.oldPassword}
+                          value={values.oldPassword}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className={styles.blockInput}>
+                        <label>{t('newPassword')}</label>
+                        <PasswordInput
+                          className={styles.inputStyle}
+                          required={true}
+                          id={'newPassword]'}
+                          name="newPassword"
+                          labelText={''}
+                          invalid={errors.newPassword && touched.newPassword}
+                          invalidText={errors.newPassword}
+                          value={values.newPassword}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className={styles.blockInput}>
+                        <label>{t('PasswordConfirm')}</label>
+                        <PasswordInput
+                          className={styles.inputStyle}
+                          required={true}
+                          id={'confirmPassword]'}
+                          name="confirmPassword"
+                          labelText={''}
+                          invalid={errors.confirmPassword && touched.confirmPassword}
+                          invalidText={errors.confirmPassword}
+                          value={values.confirmPassword}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={styles.blockInput}>
+                        <label>{t('username')}</label>
+                        <TextInput
+                          className={styles.inputStyle}
+                          id={'username'}
+                          labelText={''}
+                          invalidText={errors.username}
+                          value={values.username}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className={styles.blockInput}>
+                        <label>{t('password')}</label>
+                        <PasswordInput
+                          className={styles.inputStyle}
+                          id={'password]'}
+                          labelText={''}
+                          required
+                          invalidText={errors.password}
+                          value={values.password}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </>
+                  )}
+                  {isValid && (
+                    <div className={styles['center']}>
+                      <p className={styles['error-msg']}>{t(errorMessage)}</p>
+                    </div>
+                  )}
+                  <Button
+                    className={styles.loginButton}
+                    type="submit"
+                    isSelected={true}
+                    //disabled={!(dirty && isValid)}
+                  >
+                    {t(updatePassword ? 'changePassword' : 'login')}
+                  </Button>
+
+                  {updatePassword && (
+                    <div className={styles['need-help']}>
+                      <p className={styles['need-help-txt']}>
+                        {t('needAccount', 'Need account?')}
+                        <ConfigurableLink
+                          to="${openmrsBase}/spa/login"
+                          className={styles['need-account']}
+                          onClick={(e) => {
+                            localStorage.removeItem('token');
+                          }}>
+                          &nbsp;{t('signIn')}
+                        </ConfigurableLink>
+                      </p>
+                    </div>
+                  )}
+                </Form>
+              );
+            }}
+          </Formik>
+        </div>
+        <span className={styles.footer}>in collaboration with OpenMRS community</span>
       </div>
-      <span className={styles.footer}>in collaboration with OpenMRS community</span>
-    </div>
+    </>
   );
 };
+
 export default Login;
