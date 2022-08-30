@@ -7,7 +7,7 @@ import { RouteComponentProps, StaticContext } from 'react-router';
 import * as Yup from 'yup';
 import { useCurrentUser } from '../CurrentUserContext';
 import styles from '../styles.scss';
-import { updatePasswordUser, login, Status, saveUser, performLogin } from './login.resource';
+import { updatePasswordUser, login, Status, saveUser, performLogin, logout } from './login.resource';
 
 export interface LoginReferrer {
   referrer?: string;
@@ -71,9 +71,9 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
         );
       } else {
         const loginRes = await performLogin(values.username, values.password);
-        const authData = loginRes.data;
+        const authData = loginRes?.data;
         const valid = authData && authData.authenticated;
-        if (valid == null) {
+        if (valid === null) {
           localStorage.setItem('token', window.btoa(`${values.username}:${values.password}`));
           setUpdatePassword(localStorage.getItem('token'));
         } else if (!valid) {
@@ -99,6 +99,7 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
             initialValues={initialV}
             validationSchema={authSchema}
             onSubmit={(values) => {
+              // alert(0)
               handleSubmit(values);
             }}>
             {(formik) => {
@@ -185,12 +186,7 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
                       <p className={styles['error-msg']}>{t(errorMessage)}</p>
                     </div>
                   )}
-                  <Button
-                    className={styles.loginButton}
-                    type="submit"
-                    isSelected={true}
-                    //disabled={!(dirty && isValid)}
-                  >
+                  <Button className={styles.loginButton} type="submit" isSelected={true}>
                     {t(updatePassword ? 'changePassword' : 'login')}
                   </Button>
 
@@ -201,8 +197,9 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
                         <ConfigurableLink
                           to="${openmrsBase}/spa/login"
                           className={styles['need-account']}
-                          onClick={(e) => {
+                          onClick={async (e) => {
                             localStorage.removeItem('token');
+                            await logout();
                           }}>
                           &nbsp;{t('signIn')}
                         </ConfigurableLink>

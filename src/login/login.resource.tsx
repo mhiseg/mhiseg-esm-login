@@ -11,7 +11,8 @@ export enum Status {
 export async function performLogin(username, password, isUpdate?) {
   const userLogin = await login(username, password);
   if (userLogin?.data?.user?.userProperties?.status == Status.WAITING) {
-    return logout();
+    const log = await logout();
+    return log;
   } else {
     refetchCurrentUser();
     return userLogin;
@@ -55,6 +56,6 @@ export function saveUser(abortController: AbortController, user, uuid?: string) 
   });
 }
 
-function logout() {
+export function logout() {
   return openmrsFetch('/ws/rest/v1/session', { method: 'DELETE' });
 }
