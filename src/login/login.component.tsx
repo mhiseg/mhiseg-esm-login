@@ -58,7 +58,7 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
             const userLogin = await login(values.username, values.newPassword);
             let user = {
               userProperties: {
-                ...userLogin.data.user.userProperties,
+                ...userLogin?.data?.user?.userProperties,
                 status: Status.ENABLE,
               },
             };
@@ -73,7 +73,7 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
         const loginRes = await performLogin(values.username, values.password);
         const authData = loginRes?.data;
         const valid = authData && authData.authenticated;
-        if (valid === null) {
+        if (valid == null || valid === undefined) {
           localStorage.setItem('token', window.btoa(`${values.username}:${values.password}`));
           setUpdatePassword(localStorage.getItem('token'));
         } else if (!valid) {
@@ -140,7 +140,7 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
                         />
                       </div>
                       <div className={styles.blockInput}>
-                        <label>{t('PasswordConfirm')}</label>
+                        <label>{t('passwordConfirm')}</label>
                         <PasswordInput
                           className={styles.inputStyle}
                           required={true}
