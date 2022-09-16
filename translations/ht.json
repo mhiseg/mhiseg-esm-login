@@ -22,13 +22,14 @@
   "messageErrorPasswordMin": "Fòk li gen pou piti 8 karaktè",
   "messageErrorPasswordMax": "Fòk li gen pou pi plis 50 karaktè",
   "messageErrorPassword": "Fòk ou gen yon modpas",
-  "messageErrorPasswordConfirm": "Konfime modpas yo menm",
-  "messageErrorIdenticPassword": "Modpas yo pa dwe menm",
+  "messageErrorPasswordConfirm": "Konfime modpas yo menm a",
+  "messageErrorIdenticPassword": "Nouvo modpas la  dwe menm ak sa w konfime",
   "messageErrorIdentic": "Ansyen modpas la dwe diferan de nouvo a",
   "messageErrorUsernameOrPassword": "Non itilizatè a oubyen modpas la pa korèk, kont ou ka bloke tou",
   "messageErrorNewPassword": "Ou dwe bay nouvo modpas la",
   "changePasswordLabel": "Chanje modpas ou",
   "oldPassword": "Ansyen modpas la",
   "newPassword": "Nouvo modpas la",
-  "changePassword": "Chanje"
+  "changePassword": "Chanje",
+  "oldPasswordIncorrect":"Ansyen modpas la pa korèk"
 }

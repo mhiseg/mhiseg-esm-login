@@ -53,8 +53,8 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
     try {
       if (updatePassword) {
         if (values.oldPassword === values.newPassword) throw new Error('messageErrorIdentic');
-        updatePasswordUser(new AbortController(), values.oldPassword, values.newPassword, updatePassword).then(
-          async (res) => {
+        updatePasswordUser(new AbortController(), values.oldPassword, values.newPassword, updatePassword)
+          .then(async (res) => {
             const userLogin = await login(values.username, values.newPassword);
             let user = {
               userProperties: {
@@ -67,8 +67,11 @@ const Login: React.FC<LoginProps> = ({ history, isLoginEnabled }) => {
             setUpdatePassword(undefined);
             refetchCurrentUser();
             history.push(user?.userProperties?.defaultPage || 'home');
-          },
-        );
+          })
+          .catch((error) => {
+            logout();
+            setErrorMessage(t('oldPasswordIncorrect'));
+          });
       } else {
         const loginRes = await performLogin(values.username, values.password);
         const authData = loginRes?.data;
