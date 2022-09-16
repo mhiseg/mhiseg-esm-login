@@ -28,10 +28,10 @@
   "messageErrorPasswordMax": "Please enter a maximum 50 characters",
   "messageErrorIdenticPassword": "Please enter a identic password ",
   "messageErrorIdentic":  "old password can not identic with new password",
-  "messageErrorUsernameOrPassword": "Incorrect username or password",
+  "messageErrorUsernameOrPassword": "Incorrect username or password or account disabled",
   "changePasswordLabel":"Change your password",
   "oldPassword": "Old password",
   "newPassword": "New password",
-  "changePassword":"Chanje"
+  "changePassword":"Change"
 
 }

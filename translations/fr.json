@@ -28,7 +28,7 @@
   "messageErrorPasswordMax": "Doit contenir 50 caractères au plus",
   "messageErrorIdenticPassword": "Les mots de passes ne sont pas identiques",
   "messageErrorIdentic":  "L'ancien mot de passe doit être different du nouveau",
-  "messageErrorUsernameOrPassword": "Pseudo ou mot de passe incorrect",
+  "messageErrorUsernameOrPassword": "Pseudo ou mot de passe incorrect ou compte bloqué",
   "changePasswordLabel":"Changer le mot de passe",
   "oldPassword": "Ancien mot de passe",
   "newPassword": "Nouveau mot de passe",
