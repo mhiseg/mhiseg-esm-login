@@ -1,6 +1,4 @@
-import { Logout32 } from '@carbon/icons-react';
-import { getLoggedInUser, openmrsFetch, refetchCurrentUser } from '@openmrs/esm-framework';
-import { useCurrentUser } from '../CurrentUserContext';
+import { openmrsFetch, refetchCurrentUser } from '@openmrs/esm-framework';
 const BASE_WS_API_URL = '/ws/rest/v1/';
 export enum Status {
   ENABLE = 'enable',
